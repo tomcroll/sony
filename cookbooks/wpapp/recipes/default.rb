@@ -13,7 +13,16 @@ include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "apache2::mod_php5"
+include_recipe "mysql::ruby"
+include_recipe "mysql2_chef_gem"
 
 apache_site "default" do
 	enable true
 end
+
+
+mysql_database node['wpapp']['database'] do
+  connection ({:host => 'localhost', :username => 'root', :password => node['mysql']['server_root_password']})
+  action :create
+end
+
